@@ -19,9 +19,11 @@ from rest_framework_jwt.views import (obtain_jwt_token,
                                       verify_jwt_token,
                                       refresh_jwt_token
                                       )
+from app.views import index
 
 urlpatterns = [
-    path('', include('app.urls')),
+    path('', index),
+    path('api/', include('app.urls')),
     path('auth/obtaintoken', obtain_jwt_token),
     path('auth/verifytoken', verify_jwt_token),
     path('auth/refreshtoken', refresh_jwt_token),
