@@ -57,3 +57,48 @@ class User(AbstractBaseUser):
     def is_active(self):
         "Is the user active?"
         return self.active
+
+    class Meta:
+        db_table = 'users'
+
+
+class Topic(models.Model):
+
+    title = models.CharField(max_length=250)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True, blank=True)
+    updated = models.DateTimeField(auto_now=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+    def __repr__(self):
+        return self.title
+
+    class Meta:
+        db_table = 'topics'
+        ordering = ['-created']
+
+
+class Notes(models.Model):
+
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    content = models.TextField()
+    created = models.DateTimeField(auto_now_add=True, blank=True)
+    updated = models.DateTimeField(auto_now=True, blank=True)
+
+    def __view(self):
+        if len(self.content) < 10:
+            return self.content
+        else:
+            return "{}...".format(self.content[:6])
+
+    def __str__(self):
+        return self.__view()
+
+    def __repr__(self):
+        return self.__view()
+
+    class Meta:
+        db_table = 'notes'
+        ordering = ['-created']
