@@ -1,0 +1,14 @@
+appdirs==1.4.3
+dj-database-url==0.4.2
+Django==2.0.3
+django-cors-headers==2.2.0
+djangorestframework==3.7.7
+djangorestframework-jwt==1.11.0
+drfdocs==0.0.11
+packaging==16.8
+psycopg2==2.7.1
+PyJWT==1.4.2
+pyparsing==2.2.0
+pytz==2018.3
+requests==2.13.0
+six==1.11.0
