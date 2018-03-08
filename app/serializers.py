@@ -27,11 +27,23 @@ class UserCreateUpdateSerizalizer(ModelSerializer):
 
 
 class TopicListCreateSerializer(ModelSerializer):
+    notes = SerializerMethodField()
+
     class Meta:
         model = Topic
-        fields = ['title','created','updated']
+        fields = ['id', 'title', 'notes', 'created', 'updated']
 
     def create(self, validated_data):
         user = validated_data['user']
         title = validated_data['title']
         return Topic.objects.create_topic(user, title)
+
+    def get_notes(self, obj):
+        return obj.notes_set.count()
+
+
+class NotesListCreateSerializer(ModelSerializer):
+
+    class Meta:
+        model = Notes
+        fields = ['id','content','created','updated']

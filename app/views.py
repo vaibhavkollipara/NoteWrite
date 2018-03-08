@@ -4,10 +4,13 @@ from rest_framework.generics import (
     ListCreateAPIView,
     DestroyAPIView,
     RetrieveUpdateAPIView,
-    RetrieveDestroyAPIView
+    RetrieveUpdateDestroyAPIView,
+    UpdateAPIView,
 )
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from .permissions import IsTopicOwner
 from .serializers import *
+from .exceptions import TopicNotFoundException
 
 
 def index(request):
@@ -49,3 +52,19 @@ class TopicListCreateApiView(ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+class TopicUpdateApiView(RetrieveUpdateDestroyAPIView):
+
+    serializer_class = TopicListCreateSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_kwarg = 'id'
+
+    def get_object(self, *args, **kwargs):
+        topic_id = self.kwargs.get(self.lookup_kwarg)
+        try:
+            topic = Topic.objects.get(pk=topic_id)
+            #self.check_object_permissions(self.request, topic)
+            return topic
+        except:
+            raise TopicNotFoundException()
