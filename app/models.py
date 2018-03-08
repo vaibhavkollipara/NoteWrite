@@ -69,6 +69,8 @@ class Topic(models.Model):
     created = models.DateTimeField(auto_now_add=True, blank=True)
     updated = models.DateTimeField(auto_now=True, blank=True)
 
+    objects = TopicManager()
+
     def __str__(self):
         return self.title
 
@@ -86,6 +88,8 @@ class Notes(models.Model):
     content = models.TextField()
     created = models.DateTimeField(auto_now_add=True, blank=True)
     updated = models.DateTimeField(auto_now=True, blank=True)
+
+    objects = NoteManager()
 
     def __view(self):
         if len(self.content) < 10:

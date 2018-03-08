@@ -24,3 +24,14 @@ class UserCreateUpdateSerizalizer(ModelSerializer):
         email = validated_data['email']
         password = validated_data['password']
         return User.objects.create_user(first_name, last_name, email, password)
+
+
+class TopicListCreateSerializer(ModelSerializer):
+    class Meta:
+        model = Topic
+        fields = ['title','created','updated']
+
+    def create(self, validated_data):
+        user = validated_data['user']
+        title = validated_data['title']
+        return Topic.objects.create_topic(user, title)

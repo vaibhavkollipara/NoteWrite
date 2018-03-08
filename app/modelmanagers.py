@@ -66,10 +66,11 @@ class UserManager(BaseUserManager):
 class TopicManager(Manager):
 
     def create_topic(self, user, title):
-        topic = Topic()
+        topic = self.model()
         topic.user = user
         topic.title = title
         topic.save()
+        return topic
 
 
 class NoteManager(Manager):
@@ -77,7 +78,7 @@ class NoteManager(Manager):
     def create_note(self, topic_id, content):
         try:
             topic = Topic.objects.get(pk=topic_id)
-            note = Note()
+            note = self.model()
             note.topic = topic
             note.content = content
             note.save()

@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from rest_framework.generics import (
     CreateAPIView,
-    ListAPIView,
+    ListCreateAPIView,
     DestroyAPIView,
     RetrieveUpdateAPIView,
     RetrieveDestroyAPIView
@@ -29,10 +29,23 @@ def index(request):
 
 class UserCreateApiView(CreateAPIView):
     """
-    Api view to signu new user
+    Api view to signup new user
     """
     serializer_class = UserCreateUpdateSerizalizer
     permission_classes = [AllowAny]
 
     def perform_create(self, serializer):
         serializer.save()
+
+
+class TopicListCreateApiView(ListCreateAPIView):
+    """
+    Api view to create new topic
+    """
+    serializer_class = TopicListCreateSerializer
+
+    def get_queryset(self, *args, **kwargs):
+        return self.request.user.topic_set.all()
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
